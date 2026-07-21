@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SentinelScan — AI Vulnerability Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="scanlines"></div>
+
+<header class="topbar">
+    <div class="brand">
+        <span class="brand-mark">▮▮</span>
+        <span class="brand-name">SentinelScan</span>
+    </div>
+    <div class="brand-tag">AI-assisted static analysis // powered by Claude</div>
+</header>
+
+<main class="container">
+
+    <section id="upload-view" class="panel upload-panel">
+        <div class="eyebrow">$ initiate_scan</div>
+        <h1>Point it at a codebase.<br>Get a plain-English threat brief back.</h1>
+        <p class="lede">Upload a .zip of your project. Every source file gets read by an LLM
+        trained to think like an app-sec reviewer — line-level findings, severity, CWE, and a fix.</p>
+
+        <form id="scan-form">
+            <label id="dropzone" for="file-input" class="dropzone">
+                <input type="file" id="file-input" name="project" accept=".zip" hidden>
+                <span class="dz-icon">⌁</span>
+                <span class="dz-text" id="dz-text">drop_project.zip <span class="dz-sub">or click to browse</span></span>
+            </label>
+            <button type="submit" class="btn-primary" id="scan-btn" disabled>run_scan()</button>
+        </form>
+    </section>
+
+    <section id="scan-view" class="panel scan-panel hidden">
+        <div class="eyebrow">$ scan --status=running</div>
+        <div class="progress-row">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-label" id="progress-label">0 / 0</div>
+        </div>
+        <div class="terminal" id="terminal-log">
+            <div class="term-line term-boot">&gt; connecting to claude-sonnet-4-6 ...</div>
+        </div>
+    </section>
+
+    <section id="results-view" class="panel results-panel hidden">
+        <div class="eyebrow">$ scan --status=complete</div>
+        <h2 id="results-heading">Findings</h2>
+        <div class="summary-cards" id="summary-cards"></div>
+        <div class="findings-list" id="findings-list"></div>
+        <button class="btn-secondary" id="scan-again-btn">scan_another_project()</button>
+    </section>
+
+</main>
+
+<footer class="footer">SentinelScan — built for portfolio demo purposes. Not a substitute for a licensed pentest.</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

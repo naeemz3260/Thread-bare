@@ -1,0 +1,8 @@
+reports/*.html
+reports/*.md
+!reports/.gitkeep
+__pycache__/
+*.pyc
+.env
+*.db
+uploads/
