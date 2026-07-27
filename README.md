@@ -95,6 +95,35 @@ This was built to demonstrate applied AI + application security skills for inter
 applications — specifically: prompt engineering for structured security output, working with
 the Anthropic API, and building a usable security tool end-to-end (not just a script).
 
+## Deploying to Vercel
+
+The web dashboard is set up to deploy on Vercel as a Python serverless function.
+
+1. Push this repo to GitHub (see below).
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
+3. In **Settings → Environment Variables**, add:
+   - `ANTHROPIC_API_KEY` = your key from console.anthropic.com
+4. Deploy. Vercel picks up `vercel.json` automatically.
+
+**Note on serverless limits:** each scan runs as a single request-response
+(no background polling — serverless instances are stateless, so this app
+deliberately avoids relying on in-memory job state surviving between
+requests). Vercel's default function timeout is short on the free Hobby
+plan; `vercel.json` requests a 60s `maxDuration`, which needs a Pro plan to
+take effect. For a demo-sized `.zip` (a handful of files) this is normally
+plenty. For large codebases, either upgrade the plan or scan via the CLI
+instead — the CLI has no timeout.
+
+## Pushing to GitHub
+
+```bash
+git remote add origin https://github.com/<your-username>/ai-vuln-scanner.git
+git push -u origin main
+```
+
+`.gitignore` already excludes `.env`, `reports/`, and `__pycache__` — double
+check no real API key is committed before pushing.
+
 ## Disclaimer
 
 This tool is for educational and portfolio purposes. The included vulnerable app is

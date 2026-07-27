@@ -25,9 +25,6 @@ from core.file_utils import discover_source_files, get_language, read_file_safel
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = tempfile.mkdtemp(prefix="vuln_scan_")
 
-# In-memory job store: {job_id: {"status": ..., "progress": ..., "findings": [...]}}
-JOBS = {}
-
 
 @app.route("/")
 def index():
@@ -55,43 +52,29 @@ def start_scan():
         return jsonify({"error": "Uploaded file is not a valid .zip archive"}), 400
 
     files = discover_source_files(extract_dir)
-    JOBS[job_id] = {
-        "status": "running",
-        "total": len(files),
-        "done": 0,
-        "findings": [],
-        "current_file": None,
-    }
+    job = {"status": "running", "total": len(files), "done": 0, "findings": []}
 
-    # NOTE: for a real production app this should run in a background worker
-    # (Celery/RQ/thread). Kept synchronous-but-chunked here for demo simplicity —
-    # the frontend polls /api/status/<job_id> so the UI still feels live.
-    run_scan_job(job_id, extract_dir, files)
+    # Runs fully synchronously and returns the complete result in one response.
+    # (Deliberately not using a background-job + polling split here — on
+    # serverless platforms like Vercel each request can hit a different
+    # function instance, so an in-memory job store can't be relied on to
+    # still be there for a later poll.)
+    run_scan_job(job, extract_dir, files)
+    shutil.rmtree(extract_dir, ignore_errors=True)
 
-    return jsonify({"job_id": job_id})
+    return jsonify(job)
 
 
-def run_scan_job(job_id, root_dir, files):
+def run_scan_job(job, root_dir, files):
     scanner = ClaudeVulnScanner()
-    job = JOBS[job_id]
     for file_path in files:
         rel_path = os.path.relpath(file_path, root_dir)
-        job["current_file"] = rel_path
         code = read_file_safely(file_path)
         language = get_language(file_path)
         findings = scanner.scan_file(rel_path, code, language)
         job["findings"].extend(findings)
         job["done"] += 1
     job["status"] = "complete"
-    job["current_file"] = None
-
-
-@app.route("/api/status/<job_id>")
-def status(job_id):
-    job = JOBS.get(job_id)
-    if not job:
-        return jsonify({"error": "Job not found"}), 404
-    return jsonify(job)
 
 
 if __name__ == "__main__":

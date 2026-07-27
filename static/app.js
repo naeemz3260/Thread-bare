@@ -1,9 +1,9 @@
 const SEV_COLORS = {
-    Critical: "#ff2b6d",
-    High: "#ff7a45",
-    Medium: "#ffb020",
-    Low: "#00d9ff",
-    Info: "#5f6b81",
+    Critical: "#d6304a",
+    High: "#d9711f",
+    Medium: "#c48a12",
+    Low: "#2563eb",
+    Info: "#8a8a97",
 };
 const SEV_ORDER = ["Critical", "High", "Medium", "Low", "Info"];
 
@@ -26,8 +26,6 @@ const findingsList = document.getElementById("findings-list");
 const scanAgainBtn = document.getElementById("scan-again-btn");
 
 let selectedFile = null;
-let pollTimer = null;
-let seenFileCount = 0;
 
 fileInput.addEventListener("change", () => {
     if (fileInput.files.length) {
@@ -57,23 +55,41 @@ scanForm.addEventListener("submit", async (e) => {
 
     uploadView.classList.add("hidden");
     scanView.classList.remove("hidden");
-    terminalLog.innerHTML = `<div class="term-line term-boot">&gt; connecting to claude-sonnet-4-6 ...</div>`;
-    progressFill.style.width = "0%";
-    progressLabel.textContent = "0 / 0";
-    seenFileCount = 0;
+    terminalLog.innerHTML = `<div class="term-line term-boot">&gt; connecting to claude-sonnet-5 ...</div>`;
+    progressFill.style.width = "6%";
+    progressLabel.textContent = "scanning...";
+    appendLog("> uploading project archive...", "term-active");
 
     const formData = new FormData();
     formData.append("project", selectedFile);
 
+    // Indeterminate progress animation while the single synchronous
+    // request is in flight (serverless functions return one full
+    // response rather than being polled for incremental status).
+    let pct = 6;
+    const pulse = setInterval(() => {
+        pct = Math.min(pct + Math.random() * 6, 92);
+        progressFill.style.width = `${pct}%`;
+    }, 500);
+
     try {
         const res = await fetch("/api/scan", { method: "POST", body: formData });
         const data = await res.json();
+        clearInterval(pulse);
+
         if (data.error) {
             appendLog(`✗ ${data.error}`, "term-found");
+            progressFill.style.width = "0%";
             return;
         }
-        pollStatus(data.job_id);
+
+        progressFill.style.width = "100%";
+        progressLabel.textContent = `${data.done} / ${data.total}`;
+        appendLog(`✓ scanned ${data.done} file(s)`, "term-active");
+        appendLog(`> scan complete — ${data.findings.length} finding(s)`, "term-found");
+        setTimeout(() => renderResults(data.findings), 500);
     } catch (err) {
+        clearInterval(pulse);
         appendLog(`✗ could not reach server: ${err}`, "term-found");
     }
 });
@@ -84,31 +100,6 @@ function appendLog(text, cls = "term-active") {
     line.textContent = text;
     terminalLog.appendChild(line);
     terminalLog.scrollTop = terminalLog.scrollHeight;
-}
-
-function pollStatus(jobId) {
-    pollTimer = setInterval(async () => {
-        const res = await fetch(`/api/status/${jobId}`);
-        const job = await res.json();
-
-        const pct = job.total ? Math.round((job.done / job.total) * 100) : 0;
-        progressFill.style.width = `${pct}%`;
-        progressLabel.textContent = `${job.done} / ${job.total}`;
-
-        if (job.current_file && job.done >= seenFileCount) {
-            // only log once we cross into a new file count
-        }
-        if (job.done > seenFileCount) {
-            appendLog(`✓ scanned file ${job.done}/${job.total}`, "term-active");
-            seenFileCount = job.done;
-        }
-
-        if (job.status === "complete") {
-            clearInterval(pollTimer);
-            appendLog(`> scan complete — ${job.findings.length} finding(s)`, "term-found");
-            setTimeout(() => renderResults(job.findings), 500);
-        }
-    }, 400);
 }
 
 function renderResults(findings) {
