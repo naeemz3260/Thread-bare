@@ -84,6 +84,11 @@ h1 {
     max-width: 560px;
     margin-bottom: 44px;
 }
+.lede em {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent);
+}
 
 .pill-row {
     display: flex;
