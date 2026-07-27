@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vantage — AI Vulnerability Scanner</title>
+<title>Threadbare — AI Vulnerability Scanner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/style.css">
@@ -14,18 +14,33 @@
 <header class="topbar">
     <div class="brand">
         <span class="brand-mark">▮▮</span>
-        <span class="brand-name">Vantage</span>
+        <span class="brand-name">Threadbare</span>
     </div>
-    <div class="brand-tag">AI-assisted static analysis // powered by Claude</div>
+    <div class="brand-tag">AI-powered code security auditor // built on Claude</div>
 </header>
 
 <main class="container">
 
     <section id="upload-view" class="panel upload-panel">
         <div class="eyebrow">$ initiate_scan</div>
-        <h1>Point it at a codebase.<br>Get a plain-English threat brief back.</h1>
-        <p class="lede">Upload a .zip of your project. Every source file gets read by an LLM
-        trained to think like an app-sec reviewer — line-level findings, severity, CWE, and a fix.</p>
+        <h1>AI-powered source code security audits.<br>Plain English. Line by line.</h1>
+        <p class="lede">Threadbare reads your codebase the way a senior app-sec engineer would —
+        Claude analyzes every file, flags real vulnerabilities with severity and CWE, explains
+        exactly why each line is unsafe, and tells you how to fix it.</p>
+
+        <div class="pill-row">
+            <span class="pill">SQL injection</span>
+            <span class="pill">XSS</span>
+            <span class="pill">Command injection</span>
+            <span class="pill">Hardcoded secrets</span>
+            <span class="pill">Insecure deserialization</span>
+        </div>
+        <div class="pill-row pill-row-lang">
+            <span class="pill pill-lang">Python</span>
+            <span class="pill pill-lang">JavaScript</span>
+            <span class="pill pill-lang">PHP</span>
+            <span class="pill pill-lang">Java</span>
+        </div>
 
         <form id="scan-form">
             <label id="dropzone" for="file-input" class="dropzone">
@@ -60,7 +75,7 @@
 
 </main>
 
-<footer class="footer">Vantage — built for portfolio demo purposes. Not a substitute for a licensed pentest.</footer>
+<footer class="footer">Threadbare — built for portfolio demo purposes. Not a substitute for a licensed pentest.</footer>
 
 <script src="/static/app.js"></script>
 </body>

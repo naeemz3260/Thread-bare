@@ -85,6 +85,30 @@ h1 {
     margin-bottom: 44px;
 }
 
+.pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.pill-row-lang { margin-bottom: 26px; }
+.pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 13px;
+    border-radius: 20px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--sans);
+}
+.pill-lang {
+    background: #fbfaf7;
+    color: var(--muted);
+    border: 1px solid var(--panel-border);
+    font-family: var(--mono-body);
+    font-weight: 500;
+}
+
 .dropzone {
     display: flex;
     align-items: center;

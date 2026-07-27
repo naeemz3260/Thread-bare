@@ -1,11 +1,11 @@
-# 🛡️ Vantage — AI-Powered Vulnerability Scanner
+# 🛡️ Threadbare — AI-Powered Vulnerability Scanner
 
-Vantage is a static application security testing (SAST) tool that uses **Claude**
+Threadbare is a static application security testing (SAST) tool that uses **Claude**
 (Anthropic's LLM) to read source code the way a human application security reviewer would —
 finding real vulnerabilities and explaining, in plain English, *why* each line is insecure and
 *how* to fix it.
 
-Unlike traditional regex/pattern-based SAST tools, Vantage reasons about code context,
+Unlike traditional regex/pattern-based SAST tools, Threadbare reasons about code context,
 so it can catch logic-level issues (broken access control, IDOR, insecure deserialization)
 that simple pattern matchers miss — and it produces a report a non-security engineer can
 actually understand.

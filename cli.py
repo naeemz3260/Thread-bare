@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Vantage — AI Vulnerability Scanner CLI
+Threadbare — AI Vulnerability Scanner CLI
 
 Usage:
     python cli.py --path ./my-project --output reports/scan --format both
@@ -16,7 +16,7 @@ from core.report_generator import generate_html_report, generate_markdown_report
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Vantage — AI-powered source code vulnerability scanner")
+    parser = argparse.ArgumentParser(description="Threadbare — AI-powered source code vulnerability scanner")
     parser.add_argument("--path", required=True, help="Path to the source code directory to scan")
     parser.add_argument("--output", default="reports/scan", help="Output report path (no extension)")
     parser.add_argument("--format", choices=["html", "markdown", "both"], default="both")
