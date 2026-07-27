@@ -163,7 +163,6 @@ h1 {
 }
 .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Scan view */
 .progress-row { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; }
 .progress-track {
     flex: 1;
@@ -199,7 +198,6 @@ h1 {
 .term-line.term-found { color: var(--gold); }
 .term-line .sev-tag { font-weight: 700; }
 
-/* Results view */
 h2 { font-family: var(--sans); font-size: 24px; font-weight: 700; margin-bottom: 22px; color: #111118; }
 
 .summary-cards { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
