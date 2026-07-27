@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI Vulnerability Scanner — Web Dashboard
+Vantage — AI Vulnerability Scanner Web Dashboard
 
 A small Flask app that lets you upload a .zip of a project (or point to a folder
 already on the server), scans it with Claude, and shows a live results dashboard.
