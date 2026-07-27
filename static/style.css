@@ -89,7 +89,7 @@ h1 {
 .lede em {
     font-style: normal;
     font-weight: 600;
-    color: var(--accent);
+    color: var();
 }
 
 .pill-row {
