@@ -2,8 +2,9 @@
     --bg: #f7f6f2;
     --panel: #ffffff;
     --panel-border: #e6e3da;
-    --text: #1c1c26;
+    --text: #16161e;
     --muted: #8a8a97;
+    --text-secondary: #52525e;
     --accent: #4338ca;
     --accent-soft: #eeecfb;
     --gold: #b8892f;
@@ -78,9 +79,10 @@ h1 {
 }
 
 .lede {
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 16px;
     line-height: 1.7;
+    letter-spacing: -0.1px;
     max-width: 560px;
     margin-bottom: 44px;
 }
